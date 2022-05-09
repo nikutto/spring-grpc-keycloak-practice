@@ -1,0 +1,12 @@
+version: '3'
+services:
+  keycloak:
+    image: quay.io/keycloak/keycloak:18.0.0
+    container_name: oidc-keycloak-spring-boot-starter
+    command:
+      - start-dev
+    ports:
+      - 8080:8080
+    environment:
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=password

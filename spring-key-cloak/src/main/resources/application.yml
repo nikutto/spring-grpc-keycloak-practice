@@ -1,0 +1,14 @@
+server:
+  port: 8081
+
+keycloak:
+  enabled: true
+  auth-server-url: http://localhost:8080
+  realm: base-realm
+  public-client: false
+  resource: spring-boot-app
+  credentials:
+    secret: 3cIAhceoDDL7agn72DrKeimccTXFLE7f
+    
+grpc:
+  enableReflection: true
