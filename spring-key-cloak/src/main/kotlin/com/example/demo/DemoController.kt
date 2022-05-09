@@ -7,4 +7,7 @@ class DemoController {
 
     @GetMapping("/hello")
     fun hello() = "Hello"
+
+    @GetMapping("/auth-hello")
+    fun authHello() = "Authed hello!"
 }

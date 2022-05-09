@@ -26,8 +26,13 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.keycloak:keycloak-spring-boot-starter:18.0.0")
 
+    implementation("org.springframework.security:spring-security-config")
+
     implementation(project(":stub"))
-    implementation("io.github.lognet:grpc-spring-boot-starter:3.1.0")
+    implementation("org.springframework.security:spring-security-oauth2-jose")
+    
+    implementation("io.github.lognet:grpc-spring-boot-starter:4.7.0")
+    implementation("org.springframework.security:spring-security-oauth2-resource-server")
 }
 
 tasks.withType<KotlinCompile> {

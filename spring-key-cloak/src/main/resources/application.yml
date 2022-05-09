@@ -12,3 +12,13 @@ keycloak:
     
 grpc:
   enableReflection: true
+  security:
+    auth:
+      enabled: true
+
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt.issuer-uri: http://localhost:8080/realms/base-realm
+        

@@ -15,6 +15,15 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.core.authority.mapping.SimpleAuthorityMapper
 import org.springframework.security.core.session.SessionRegistryImpl
 import org.springframework.security.web.authentication.session.RegisterSessionAuthenticationStrategy
+import org.lognet.springboot.grpc.security.GrpcSecurityConfigurerAdapter
+import org.lognet.springboot.grpc.security.GrpcSecurity
+import io.grpc.examples.helloworld.GreeterGrpc
+import org.keycloak.adapters.springsecurity.authentication.KeycloakAuthenticationProvider
+import org.springframework.security.oauth2.jwt.JwtDecoder
+import org.lognet.springboot.grpc.security.jwt.JwtAuthProviderFactory
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationProvider as SBJwtAuthenticationProvider
 
 @KeycloakConfiguration
 class MySecurityConfig : KeycloakWebSecurityConfigurerAdapter() {
@@ -24,26 +33,36 @@ class MySecurityConfig : KeycloakWebSecurityConfigurerAdapter() {
         keycloakAuthenticationProvider.setGrantedAuthoritiesMapper(SimpleAuthorityMapper())
         auth.authenticationProvider(keycloakAuthenticationProvider)
     }
-
-    @Bean
+    
     override fun sessionAuthenticationStrategy() = RegisterSessionAuthenticationStrategy(SessionRegistryImpl())
 
     override fun configure(http: HttpSecurity) {
         super.configure(http)
 
         http.authorizeRequests()
-            // .antMatchers("/hello").permitAll()
-            // .anyRequest().authenticated()
-            .anyRequest().permitAll()
+            .antMatchers("/hello").permitAll()
+            .anyRequest().authenticated()
     }
-
-    @Bean
-    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-    fun keycloakRestTemplate(@Autowired keycloakClientRequestFactory: KeycloakClientRequestFactory) = KeycloakRestTemplate(keycloakClientRequestFactory)
 }
 
 @KeycloakConfiguration
-class AConfig {
+class Config {
     @Bean
     fun keycloakConfigResolver(): KeycloakConfigResolver = KeycloakSpringBootConfigResolver()
+}
+
+
+class GrpcSecurityConfig(
+    @Autowired val jwtDecoder: JwtDecoder
+): GrpcSecurityConfigurerAdapter() {
+    
+    
+    override fun configure(builder: GrpcSecurity) {
+        super.configure(builder)
+        builder.authorizeRequests()
+                .methods(GreeterGrpc.getSayHelloMethod()).authenticated()
+        .and()
+                .authenticationProvider(JwtAuthProviderFactory.forAuthorities(jwtDecoder))
+    }
+    
 }
