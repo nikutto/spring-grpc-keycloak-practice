@@ -39,12 +39,6 @@ java {
     targetCompatibility = JavaVersion.VERSION_1_8
 }
 
-tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().all {
-    kotlinOptions {
-        freeCompilerArgs = listOf("-Xopt-in=kotlin.RequiresOptIn")
-    }
-}
-
 protobuf {
     protoc {
         artifact = "com.google.protobuf:protoc:${rootProject.ext["protobufVersion"]}"
