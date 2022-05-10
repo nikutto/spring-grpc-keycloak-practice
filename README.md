@@ -6,5 +6,5 @@ oken
 
 ## Example for testing grpc authed test
 
-grpcurl -plaintext -H "Authorization: Bearer $ACCESS_TOKEN" localhost:6565 helloworld.Greeter.sayHello
+grpcurl -plaintext -H "Authorization: Bearer $ACCESS_TOKEN" localhost:6565 helloworld.Greeter.SayHello
 
